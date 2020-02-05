@@ -6,8 +6,10 @@
 #include <boost/asio/io_service.hpp>       // for io_service
 #include <boost/asio/strand.hpp>		   // for strand
 #include <boost/asio/ip/tcp.hpp>           // for tcp, tcp::endpoint, tcp::s...
+#ifdef WWW_ENABLE_SSL
 #include <boost/asio/ssl.hpp>			   // for secure sockets
 #include <boost/asio/ssl/stream.hpp>	   // for secure sockets
+#endif //WWW_ENABLE_SSL
 #include <boost/function.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>  // for shared_ptr
 #include <exception>                       // for exception

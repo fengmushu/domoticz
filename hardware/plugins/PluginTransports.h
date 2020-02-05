@@ -82,6 +82,7 @@ namespace Plugins {
 		boost::asio::ip::tcp::socket	*m_Socket;
 	};
 
+	#ifdef WWW_ENABLE_SSL
 	class CPluginTransportTCPSecure : public CPluginTransportTCP
 	{
 	public:
@@ -97,6 +98,7 @@ namespace Plugins {
 		boost::asio::ssl::context*									m_Context;
 		boost::asio::ssl::stream<boost::asio::ip::tcp::socket&>*	m_TLSSock;
 	};
+	#endif //WWW_ENABLE_SSL
 
 	class CPluginTransportUDP : CPluginTransportIP
 	{

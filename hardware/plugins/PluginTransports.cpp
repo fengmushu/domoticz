@@ -338,6 +338,7 @@ namespace Plugins {
 		return true;
 	}
 
+#ifdef WWW_ENABLE_SSL
 	void CPluginTransportTCPSecure::handleWrite(const std::vector<byte>& pMessage)
 	{
 		if (m_TLSSock && m_Socket)
@@ -362,6 +363,7 @@ namespace Plugins {
 			_log.Log(LOG_ERROR, "%s: Data not sent to NULL socket.", __func__);
 		}
 	}
+#endif //WWW_ENABLE_SSL
 
 	CPluginTransportTCP::~CPluginTransportTCP()
 	{
@@ -378,6 +380,7 @@ namespace Plugins {
 		}
 	};
 
+#ifdef WWW_ENABLE_SSL
 	void CPluginTransportTCPSecure::handleAsyncConnect(const boost::system::error_code & err, boost::asio::ip::tcp::resolver::iterator endpoint_iterator)
 	{
 		std::lock_guard<std::mutex> l(PythonMutex); // Take mutex to guard access to CPluginTransport::m_pConnection
@@ -398,10 +401,8 @@ namespace Plugins {
 			//m_TLSSock->set_verify_callback(boost::bind(&CPluginTransportTCPSecure::VerifyCertificate, this, _1, _2));
 			try
 			{
-#ifdef WWW_ENABLE_SSL
 				// RK: todo: What if openssl is not compiled in?
 				m_TLSSock->handshake(ssl_socket::client);
-#endif
 
 				m_bConnected = true;
 				pPlugin->MessagePlugin(new onConnectCallback(pPlugin, m_pConnection, err.value(), err.message()));
@@ -436,7 +437,6 @@ namespace Plugins {
 		// documentation for more details. Note that the callback is called once
 		// for each certificate in the certificate chain, starting from the root
 		// certificate authority.
-
 		char subject_name[256];
 		X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
 		X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
@@ -444,7 +444,6 @@ namespace Plugins {
 		{
 			_log.Log(LOG_NORM, "(%s) TLS Certificate found '%s'", ((CConnection*)m_pConnection)->pPlugin->m_Name.c_str(), subject_name);
 		}
-
 		// TODO: Add some certificate checking
 
 		return true;
@@ -509,6 +508,7 @@ namespace Plugins {
 		}
 
 	};
+#endif //WWW_ENABLE_SSL
 
 	bool CPluginTransportUDP::handleListen()
 	{
