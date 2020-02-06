@@ -8,9 +8,11 @@
 #include "SQLHelper.h"
 #include "Logger.h"
 #include "../hardware/hardwaretypes.h"
+#ifdef FULL_HW_SUPPORTED
 #include "../hardware/Kodi.h"
 #include "../hardware/LogitechMediaServer.h"
 #include "../hardware/MySensorsBase.h"
+#endif 
 #include <iostream>
 #include "../httpclient/UrlEncode.h"
 #include "localtime_r.h"
@@ -3765,6 +3767,7 @@ bool CEventSystem::ScheduleEvent(int deviceID, const std::string &Action, bool i
 		level = calculateDimLevel(deviceID, atoi(oParseResults.sCommand.substr(10).c_str()));
 		oParseResults.sCommand = oParseResults.sCommand.substr(0, 9);
 	}
+  #ifdef FULL_HW_SUPPORTED
 	else if (oParseResults.sCommand.substr(0, 10) == "Set Volume") {
 		level = atoi(oParseResults.sCommand.substr(11).c_str());
 		oParseResults.sCommand = oParseResults.sCommand.substr(0, 10);
@@ -3825,6 +3828,7 @@ bool CEventSystem::ScheduleEvent(int deviceID, const std::string &Action, bool i
 			pHardware->SetExecuteCommand(deviceID, sParams);
 		}
 	}
+  #endif //FULL_HW
 
 	if (previousState.substr(0, 9) == "Set Level" || previousState.substr(0, 5) == "Level") {
 		previousState = "Set Level";

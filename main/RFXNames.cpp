@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "RFXNames.h"
 #include "RFXtrx.h"
+#ifdef FULL_HW_SUPPORTED
 #include "../hardware/EvohomeBase.h"
+#endif
 #include "../hardware/hardwaretypes.h"
 #include "Helper.h"
 #include "Logger.h"
@@ -1992,6 +1994,7 @@ void GetLightStatus(
 			break;
 		}
 		break;
+  #ifdef FULL_HW_SUPPORTED
 	case pTypeEvohome:
 		llevel = 0;
 		lstatus = CEvohomeBase::GetWebAPIModeName(nValue);
@@ -2010,6 +2013,7 @@ void GetLightStatus(
 			break;
 		}
 		break;
+  #endif 
 	case pTypeFan:
 		switch (dSubType)
 		{

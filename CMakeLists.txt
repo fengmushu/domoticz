@@ -341,174 +341,206 @@ push/InfluxPush.cpp
 push/WebsocketPush.cpp
 httpclient/HTTPClient.cpp
 httpclient/UrlEncode.cpp
-hardware/1Wire.cpp
-hardware/1Wire/1WireByOWFS.cpp
-hardware/1Wire/1WireByKernel.cpp
-hardware/1Wire/1WireCommon.cpp
-hardware/1Wire/1WireForWindows.cpp
-hardware/AccuWeather.cpp
-hardware/AnnaThermostat.cpp
-hardware/Arilux.cpp
-hardware/ASyncSerial.cpp
-hardware/ASyncTCP.cpp
-hardware/AtagOne.cpp
-hardware/BleBox.cpp
-hardware/Buienradar.cpp
-hardware/cayenne_lpp/CayenneLPP_Dec.cpp
-hardware/ColorSwitch.cpp
-hardware/Comm5Serial.cpp
-hardware/Comm5SMTCP.cpp
-hardware/Comm5TCP.cpp
-hardware/csocket.cpp
-hardware/CurrentCostMeterBase.cpp
-hardware/CurrentCostMeterSerial.cpp
-hardware/CurrentCostMeterTCP.cpp
-hardware/Daikin.cpp
-hardware/DarkSky.cpp
-hardware/DavisLoggerSerial.cpp
-hardware/DenkoviDevices.cpp
-hardware/DenkoviUSBDevices.cpp
-hardware/DenkoviTCPDevices.cpp
-hardware/DomoticzHardware.cpp
-hardware/DomoticzInternal.cpp
-hardware/DomoticzTCP.cpp
-hardware/Dummy.cpp
-hardware/EcoCompteur.cpp
-hardware/EcoDevices.cpp
-hardware/eHouseTCP.cpp
-hardware/eHouse/EhouseEvents.cpp
-hardware/eHouse/EhouseTcpClient.cpp
-hardware/eHouse/EhouseUdpListener.cpp
-hardware/EnOceanESP2.cpp
-hardware/EnOceanESP3.cpp
-hardware/EnphaseAPI.cpp
-hardware/Ec3kMeterTCP.cpp
-hardware/EvohomeBase.cpp
-hardware/EvohomeRadio.cpp
-hardware/EvohomeScript.cpp
-hardware/EvohomeSerial.cpp
-hardware/EvohomeTCP.cpp
-hardware/EvohomeWeb.cpp
-hardware/ETH8020.cpp
-hardware/FritzboxTCP.cpp
-hardware/GoodweAPI.cpp
-hardware/Gpio.cpp
-hardware/GpioPin.cpp
-hardware/HardwareMonitor.cpp
-hardware/HarmonyHub.cpp
-hardware/Honeywell.cpp
-hardware/HEOS.cpp
-hardware/I2C.cpp
-hardware/ICYThermostat.cpp
-hardware/InComfort.cpp
-hardware/KMTronicBase.cpp
-hardware/KMTronic433.cpp
-hardware/KMTronicSerial.cpp
-hardware/KMTronicTCP.cpp
-hardware/KMTronicUDP.cpp
-hardware/Kodi.cpp
-hardware/Limitless.cpp
-hardware/LogitechMediaServer.cpp
-hardware/Meteostick.cpp
-hardware/MochadTCP.cpp
-hardware/MQTT.cpp
-hardware/MultiFun.cpp
-hardware/MySensorsBase.cpp
-hardware/MySensorsSerial.cpp
-hardware/MySensorsTCP.cpp
-hardware/MySensorsMQTT.cpp
-hardware/NefitEasy.cpp
-hardware/Nest.cpp
-hardware/NestOAuthAPI.cpp
-hardware/Netatmo.cpp
-hardware/HttpPoller.cpp
-hardware/OnkyoAVTCP.cpp
-hardware/OpenWeatherMap.cpp
-hardware/OpenWebNetTCP.cpp
-hardware/OpenWebNetUSB.cpp
-hardware/openwebnet/bt_openwebnet.cpp
-hardware/OpenZWave.cpp
-hardware/openzwave/control_panel/ozwcp.cpp
-hardware/openzwave/control_panel/zwavelib.cpp
-hardware/OTGWBase.cpp
-hardware/OTGWSerial.cpp
-hardware/OTGWTCP.cpp
-hardware/PanasonicTV.cpp
-hardware/P1MeterBase.cpp
-hardware/P1MeterSerial.cpp
-hardware/P1MeterTCP.cpp
-hardware/PhilipsHue/PhilipsHue.cpp
-hardware/PhilipsHue/PhilipsHueHelper.cpp
-hardware/PhilipsHue/PhilipsHueSensors.cpp
-hardware/PiFace.cpp
-hardware/Pinger.cpp
-hardware/PVOutput_Input.cpp
-hardware/RAVEn.cpp
-hardware/Rego6XXSerial.cpp
-hardware/RelayNet.cpp
-hardware/RFLinkBase.cpp
-hardware/RFLinkSerial.cpp
-hardware/RFLinkTCP.cpp
-hardware/RFXBase.cpp
-hardware/RFXComSerial.cpp
-hardware/RFXComTCP.cpp
-hardware/Rtl433.cpp
-hardware/S0MeterBase.cpp
-hardware/S0MeterSerial.cpp
-hardware/S0MeterTCP.cpp
-hardware/SatelIntegra.cpp
-hardware/SBFSpot.cpp
-hardware/serial/serial.cpp
-hardware/serial/impl/unix.cpp
-hardware/SolarEdgeAPI.cpp
-hardware/SolarMaxTCP.cpp
-hardware/Sterbox.cpp
-hardware/SysfsGpio.cpp
-hardware/Tado.cpp
-hardware/TCPProxy/tcpproxy_server.cpp
-hardware/TE923.cpp
-hardware/TE923Tool.cpp
-hardware/TeleinfoBase.cpp
-hardware/TeleinfoSerial.cpp
-hardware/Tellstick.cpp
-hardware/TellstickFactory.cpp
-hardware/Thermosmart.cpp
-hardware/ToonThermostat.cpp
-hardware/TTNMQTT.cpp
-hardware/USBtin.cpp
-hardware/USBtin_MultiblocV8.cpp
-hardware/VolcraftCO20.cpp
-hardware/Winddelen.cpp
-hardware/WOL.cpp
-hardware/Wunderground.cpp
-hardware/XiaomiGateway.cpp
-hardware/Yeelight.cpp
-hardware/YouLess.cpp
-hardware/ZiBlueBase.cpp
-hardware/ZiBlueSerial.cpp
-hardware/ZiBlueTCP.cpp
-hardware/ZWaveBase.cpp
+)
+
+## APPEND hw supports
+option(USE_FULL_HW "Build Full hardware supported?" NO)
+if(USE_FULL_HW)
+  add_definitions(-DFULL_HW_SUPPORTED)
+  list(APPEND
+  domoticz_SRCS
+  hardware/1Wire.cpp
+  hardware/1Wire/1WireByOWFS.cpp
+  hardware/1Wire/1WireByKernel.cpp
+  hardware/1Wire/1WireCommon.cpp
+  hardware/1Wire/1WireForWindows.cpp
+  hardware/AccuWeather.cpp
+  hardware/AnnaThermostat.cpp
+  hardware/Arilux.cpp
+  hardware/AtagOne.cpp
+  hardware/BleBox.cpp
+  hardware/Buienradar.cpp
+  hardware/cayenne_lpp/CayenneLPP_Dec.cpp
+  hardware/Comm5Serial.cpp
+  hardware/Comm5SMTCP.cpp
+  hardware/Comm5TCP.cpp
+  hardware/csocket.cpp
+  hardware/CurrentCostMeterBase.cpp
+  hardware/CurrentCostMeterSerial.cpp
+  hardware/CurrentCostMeterTCP.cpp
+  hardware/Daikin.cpp
+  hardware/DarkSky.cpp
+  hardware/DavisLoggerSerial.cpp
+  hardware/DenkoviDevices.cpp
+  hardware/DenkoviUSBDevices.cpp
+  hardware/DenkoviTCPDevices.cpp
+  hardware/DomoticzTCP.cpp
+  hardware/EcoCompteur.cpp
+  hardware/EcoDevices.cpp
+  hardware/eHouseTCP.cpp
+  hardware/eHouse/EhouseEvents.cpp
+  hardware/eHouse/EhouseTcpClient.cpp
+  hardware/eHouse/EhouseUdpListener.cpp
+  hardware/EnOceanESP2.cpp
+  hardware/EnOceanESP3.cpp
+  hardware/EnphaseAPI.cpp
+  hardware/Ec3kMeterTCP.cpp
+  hardware/EvohomeBase.cpp
+  hardware/EvohomeRadio.cpp
+  hardware/EvohomeScript.cpp
+  hardware/EvohomeSerial.cpp
+  hardware/EvohomeTCP.cpp
+  hardware/EvohomeWeb.cpp
+  hardware/ETH8020.cpp
+  hardware/FritzboxTCP.cpp
+  hardware/GoodweAPI.cpp
+  hardware/Gpio.cpp
+  hardware/GpioPin.cpp
+  hardware/HardwareMonitor.cpp
+  hardware/HarmonyHub.cpp
+  hardware/Honeywell.cpp
+  hardware/HEOS.cpp
+  hardware/I2C.cpp
+  hardware/ICYThermostat.cpp
+  hardware/InComfort.cpp
+  hardware/KMTronicBase.cpp
+  hardware/KMTronic433.cpp
+  hardware/KMTronicSerial.cpp
+  hardware/KMTronicTCP.cpp
+  hardware/KMTronicUDP.cpp
+  hardware/Kodi.cpp
+  hardware/Limitless.cpp
+  hardware/LogitechMediaServer.cpp
+  hardware/Meteostick.cpp
+  hardware/MochadTCP.cpp
+  hardware/MQTT.cpp
+  hardware/MultiFun.cpp
+  hardware/MySensorsBase.cpp
+  hardware/MySensorsSerial.cpp
+  hardware/MySensorsTCP.cpp
+  hardware/MySensorsMQTT.cpp
+  hardware/NefitEasy.cpp
+  hardware/Nest.cpp
+  hardware/NestOAuthAPI.cpp
+  hardware/Netatmo.cpp
+  hardware/HttpPoller.cpp
+  hardware/OnkyoAVTCP.cpp
+  hardware/OpenWeatherMap.cpp
+  hardware/OpenWebNetTCP.cpp
+  hardware/OpenWebNetUSB.cpp
+  hardware/openwebnet/bt_openwebnet.cpp
+  hardware/OpenZWave.cpp
+  hardware/openzwave/control_panel/ozwcp.cpp
+  hardware/openzwave/control_panel/zwavelib.cpp
+  hardware/OTGWBase.cpp
+  hardware/OTGWSerial.cpp
+  hardware/OTGWTCP.cpp
+  hardware/PanasonicTV.cpp
+  hardware/P1MeterBase.cpp
+  hardware/P1MeterSerial.cpp
+  hardware/P1MeterTCP.cpp
+  hardware/PhilipsHue/PhilipsHue.cpp
+  hardware/PhilipsHue/PhilipsHueHelper.cpp
+  hardware/PhilipsHue/PhilipsHueSensors.cpp
+  hardware/PiFace.cpp
+  hardware/Pinger.cpp
+  hardware/PVOutput_Input.cpp
+  hardware/RAVEn.cpp
+  hardware/Rego6XXSerial.cpp
+  hardware/RelayNet.cpp
+  hardware/RFLinkBase.cpp
+  hardware/RFLinkSerial.cpp
+  hardware/RFLinkTCP.cpp
+  hardware/RFXBase.cpp
+  hardware/RFXComSerial.cpp
+  hardware/RFXComTCP.cpp
+  hardware/Rtl433.cpp
+  hardware/S0MeterBase.cpp
+  hardware/S0MeterSerial.cpp
+  hardware/S0MeterTCP.cpp
+  hardware/SatelIntegra.cpp
+  hardware/SBFSpot.cpp
+  hardware/SolarEdgeAPI.cpp
+  hardware/SolarMaxTCP.cpp
+  hardware/Sterbox.cpp
+  hardware/SysfsGpio.cpp
+  hardware/Tado.cpp
+  hardware/TCPProxy/tcpproxy_server.cpp
+  hardware/TE923.cpp
+  hardware/TE923Tool.cpp
+  hardware/TeleinfoBase.cpp
+  hardware/TeleinfoSerial.cpp
+  hardware/Tellstick.cpp
+  hardware/TellstickFactory.cpp
+  hardware/Thermosmart.cpp
+  hardware/ToonThermostat.cpp
+  hardware/TTNMQTT.cpp
+  hardware/USBtin.cpp
+  hardware/USBtin_MultiblocV8.cpp
+  hardware/VolcraftCO20.cpp
+  hardware/Winddelen.cpp
+  hardware/WOL.cpp
+  hardware/Wunderground.cpp
+  hardware/Yeelight.cpp
+  hardware/YouLess.cpp
+  hardware/ZiBlueBase.cpp
+  hardware/ZiBlueSerial.cpp
+  hardware/ZiBlueTCP.cpp
+  hardware/ZWaveBase.cpp
+  )
+endif()
+
+## APPEND basic hw
+list(APPEND
+domoticz_SRCS
+  hardware/serial/serial.cpp
+  hardware/serial/impl/unix.cpp
+  hardware/ASyncSerial.cpp
+  hardware/ASyncTCP.cpp
+  hardware/ColorSwitch.cpp
+  hardware/XiaomiGateway.cpp
+  hardware/DomoticzHardware.cpp
+  hardware/DomoticzInternal.cpp
+  hardware/Dummy.cpp
 hardware/plugins/DelayedLink.cpp
 hardware/plugins/Plugins.cpp
 hardware/plugins/PluginManager.cpp
 hardware/plugins/PluginProtocols.cpp
 hardware/plugins/PluginTransports.cpp
 hardware/plugins/PythonObjects.cpp
+)
+
+## APPEND full hw notifications
+if(USE_FULL_HW)
+list(APPEND
+domoticz_SRCS
+  notifications/NotificationEmail.cpp
+  notifications/NotificationGCM.cpp
+  notifications/NotificationKodi.cpp
+  notifications/NotificationLogitechMediaServer.cpp
+  notifications/NotificationSMS.cpp
+  notifications/NotificationTelegram.cpp
+)
+endif()
+
+## CLOUD disabled
+option(USE_CLOUD "Build enable the cloud server supported" NO)
+if(NOT USE_CLOUD)
+  add_definitions(-DNOCLOUD)
+endif()
+
+## APPEND others
+list(APPEND
+domoticz_SRCS
 notifications/NotificationBase.cpp
 notifications/NotificationBrowser.cpp
-notifications/NotificationEmail.cpp
-notifications/NotificationGCM.cpp
 notifications/NotificationHelper.cpp
 notifications/NotificationHTTP.cpp
-notifications/NotificationKodi.cpp
-notifications/NotificationLogitechMediaServer.cpp
 notifications/NotificationPushbullet.cpp
 notifications/NotificationProwl.cpp
 notifications/NotificationPushover.cpp
 notifications/NotificationPushsafer.cpp
 notifications/NotificationPushalot.cpp
-notifications/NotificationSMS.cpp
-notifications/NotificationTelegram.cpp
 smtpclient/SMTPClient.cpp
 tcpserver/TCPClient.cpp
 tcpserver/TCPServer.cpp
@@ -720,7 +752,8 @@ ELSE()
 ENDIF(OpenZWave)
 
 
-IF(EXISTS /sys/class/gpio)
+option(USE_GPIO "Build enable sys gpio" NO)
+IF(USE_GPIO)
   message(STATUS "GPIO is available")
   add_definitions(-DWITH_GPIO)
 ELSE()

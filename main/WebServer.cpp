@@ -12,6 +12,7 @@
 #include "dzVents.h"
 #include "../httpclient/HTTPClient.h"
 #include "../hardware/hardwaretypes.h"
+#ifdef FULL_HW_SUPPORTED
 #include "../hardware/1Wire.h"
 #include "../hardware/OTGWBase.h"
 #ifdef WITH_OPENZWAVE
@@ -40,6 +41,9 @@
 #include "../hardware/GpioPin.h"
 #endif // WITH_GPIO
 #include "../hardware/Tellstick.h"
+#endif
+
+
 #include "../webserver/Base64.h"
 #include "../smtpclient/SMTPClient.h"
 #include "../json/json.h"
@@ -355,24 +359,28 @@ namespace http {
 			m_pWebEm->RegisterPageCode("/images/floorplans/plan", boost::bind(&CWebServer::GetFloorplanImage, this, _1, _2, _3));
 
 			m_pWebEm->RegisterPageCode("/storesettings", boost::bind(&CWebServer::PostSettings, this, _1, _2, _3));
+		  #ifdef FULL_HW_SUPPORTED
 			m_pWebEm->RegisterActionCode("setrfxcommode", boost::bind(&CWebServer::SetRFXCOMMode, this, _1, _2, _3));
 			m_pWebEm->RegisterActionCode("rfxupgradefirmware", boost::bind(&CWebServer::RFXComUpgradeFirmware, this, _1, _2, _3));
 			RegisterCommandCode("rfxfirmwaregetpercentage", boost::bind(&CWebServer::Cmd_RFXComGetFirmwarePercentage, this, _1, _2, _3), true);
 			m_pWebEm->RegisterActionCode("setrego6xxtype", boost::bind(&CWebServer::SetRego6XXType, this, _1, _2, _3));
 			m_pWebEm->RegisterActionCode("sets0metertype", boost::bind(&CWebServer::SetS0MeterType, this, _1, _2, _3));
 			m_pWebEm->RegisterActionCode("setlimitlesstype", boost::bind(&CWebServer::SetLimitlessType, this, _1, _2, _3));
+		  #endif 
 
 			m_pWebEm->RegisterActionCode("uploadfloorplanimage", boost::bind(&CWebServer::UploadFloorplanImage, this, _1, _2, _3));
 
 
+		  #ifdef FULL_HW_SUPPORTED
 			m_pWebEm->RegisterActionCode("setopenthermsettings", boost::bind(&CWebServer::SetOpenThermSettings, this, _1, _2, _3));
 			RegisterCommandCode("sendopenthermcommand", boost::bind(&CWebServer::Cmd_SendOpenThermCommand, this, _1, _2, _3), true);
 
 			m_pWebEm->RegisterActionCode("reloadpiface", boost::bind(&CWebServer::ReloadPiFace, this, _1, _2, _3));
 			m_pWebEm->RegisterActionCode("setcurrentcostmetertype", boost::bind(&CWebServer::SetCurrentCostUSBType, this, _1, _2, _3));
-			m_pWebEm->RegisterActionCode("restoredatabase", boost::bind(&CWebServer::RestoreDatabase, this, _1, _2, _3));
 			m_pWebEm->RegisterActionCode("sbfspotimportolddata", boost::bind(&CWebServer::SBFSpotImportOldData, this, _1, _2, _3));
+		  #endif
 
+			m_pWebEm->RegisterActionCode("restoredatabase", boost::bind(&CWebServer::RestoreDatabase, this, _1, _2, _3));
 			m_pWebEm->RegisterActionCode("event_create", boost::bind(&CWebServer::EventCreate, this, _1, _2, _3));
 
 			RegisterCommandCode("getlanguage", boost::bind(&CWebServer::Cmd_GetLanguage, this, _1, _2, _3), true);
@@ -398,6 +406,7 @@ namespace http {
 			RegisterCommandCode("updatecamera", boost::bind(&CWebServer::Cmd_UpdateCamera, this, _1, _2, _3));
 			RegisterCommandCode("deletecamera", boost::bind(&CWebServer::Cmd_DeleteCamera, this, _1, _2, _3));
 
+		  #ifdef FULL_HW_SUPPORTED
 			RegisterCommandCode("wolgetnodes", boost::bind(&CWebServer::Cmd_WOLGetNodes, this, _1, _2, _3));
 			RegisterCommandCode("woladdnode", boost::bind(&CWebServer::Cmd_WOLAddNode, this, _1, _2, _3));
 			RegisterCommandCode("wolupdatenode", boost::bind(&CWebServer::Cmd_WOLUpdateNode, this, _1, _2, _3));
@@ -452,6 +461,7 @@ namespace http {
 			RegisterCommandCode("lmsgetplaylists", boost::bind(&CWebServer::Cmd_LMSGetPlaylists, this, _1, _2, _3));
 			RegisterCommandCode("lmsmediacommand", boost::bind(&CWebServer::Cmd_LMSMediaCommand, this, _1, _2, _3));
 			RegisterCommandCode("lmsdeleteunuseddevices", boost::bind(&CWebServer::Cmd_LMSDeleteUnusedDevices, this, _1, _2, _3));
+		  #endif 
 
 			RegisterCommandCode("savefibarolinkconfig", boost::bind(&CWebServer::Cmd_SaveFibaroLinkConfig, this, _1, _2, _3));
 			RegisterCommandCode("getfibarolinkconfig", boost::bind(&CWebServer::Cmd_GetFibaroLinkConfig, this, _1, _2, _3));
@@ -558,8 +568,6 @@ namespace http {
 			RegisterCommandCode("devices_list", boost::bind(&CWebServer::Cmd_GetDevicesList, this, _1, _2, _3));
 			RegisterCommandCode("devices_list_onoff", boost::bind(&CWebServer::Cmd_GetDevicesListOnOff, this, _1, _2, _3));
 
-			RegisterCommandCode("registerhue", boost::bind(&CWebServer::Cmd_PhilipsHueRegister, this, _1, _2, _3));
-
 			RegisterCommandCode("getcustomiconset", boost::bind(&CWebServer::Cmd_GetCustomIconSet, this, _1, _2, _3));
 			RegisterCommandCode("deletecustomicon", boost::bind(&CWebServer::Cmd_DeleteCustomIcon, this, _1, _2, _3));
 			RegisterCommandCode("updatecustomicon", boost::bind(&CWebServer::Cmd_UpdateCustomIcon, this, _1, _2, _3));
@@ -575,9 +583,11 @@ namespace http {
 			RegisterCommandCode("updatemobiledevice", boost::bind(&CWebServer::Cmd_UpdateMobileDevice, this, _1, _2, _3));
 			RegisterCommandCode("deletemobiledevice", boost::bind(&CWebServer::Cmd_DeleteMobileDevice, this, _1, _2, _3));
 
+		  #ifdef FULL_HW_SUPPORTED
 			RegisterCommandCode("addyeelight", boost::bind(&CWebServer::Cmd_AddYeeLight, this, _1, _2, _3));
-
 			RegisterCommandCode("addArilux", boost::bind(&CWebServer::Cmd_AddArilux, this, _1, _2, _3));
+			RegisterCommandCode("registerhue", boost::bind(&CWebServer::Cmd_PhilipsHueRegister, this, _1, _2, _3));
+		  #endif 
 
 			RegisterRType("graph", boost::bind(&CWebServer::RType_HandleGraph, this, _1, _2, _3));
 			RegisterRType("lightlog", boost::bind(&CWebServer::RType_LightLog, this, _1, _2, _3));
@@ -612,13 +622,15 @@ namespace http {
 			RegisterRType("createvirtualsensor", boost::bind(&CWebServer::RType_CreateMappedSensor, this, _1, _2, _3));
 			RegisterRType("createdevice", boost::bind(&CWebServer::RType_CreateDevice, this, _1, _2, _3));
 
+			RegisterRType("custom_light_icons", boost::bind(&CWebServer::RType_CustomLightIcons, this, _1, _2, _3));
+			RegisterRType("plans", boost::bind(&CWebServer::RType_Plans, this, _1, _2, _3));
+			RegisterRType("floorplans", boost::bind(&CWebServer::RType_FloorPlans, this, _1, _2, _3));
+
+		  #ifdef FULL_HW_SUPPORTED
 			RegisterRType("createevohomesensor", boost::bind(&CWebServer::RType_CreateEvohomeSensor, this, _1, _2, _3));
 			RegisterRType("bindevohome", boost::bind(&CWebServer::RType_BindEvohome, this, _1, _2, _3));
 			RegisterRType("createrflinkdevice", boost::bind(&CWebServer::RType_CreateRFLinkDevice, this, _1, _2, _3));
 
-			RegisterRType("custom_light_icons", boost::bind(&CWebServer::RType_CustomLightIcons, this, _1, _2, _3));
-			RegisterRType("plans", boost::bind(&CWebServer::RType_Plans, this, _1, _2, _3));
-			RegisterRType("floorplans", boost::bind(&CWebServer::RType_FloorPlans, this, _1, _2, _3));
 #ifdef WITH_OPENZWAVE
 			//ZWave
 			RegisterCommandCode("updatezwavenode", boost::bind(&CWebServer::Cmd_ZWaveUpdateNode, this, _1, _2, _3));
@@ -669,6 +681,7 @@ namespace http {
 			RegisterRType("openzwavenodes", boost::bind(&CWebServer::RType_OpenZWaveNodes, this, _1, _2, _3));
 #endif
 			RegisterCommandCode("tellstickApplySettings", boost::bind(&CWebServer::Cmd_TellstickApplySettings, this, _1, _2, _3));
+		  #endif //FULL_HW_
 
 			m_pWebEm->RegisterWhitelistURLString("/html5.appcache");
 			m_pWebEm->RegisterWhitelistURLString("/images/floorplans/plan");
@@ -4283,6 +4296,7 @@ namespace http {
 					if ((pBaseHardware->HwdType != HTYPE_EnOceanESP2) && (pBaseHardware->HwdType != HTYPE_EnOceanESP3)
 						&& (pBaseHardware->HwdType != HTYPE_USBtinGateway) )
 						return;
+				  #ifdef FULL_HW_SUPPORTED
 					unsigned long rID = 0;
 					if (pBaseHardware->HwdType == HTYPE_EnOceanESP2)
 					{
@@ -4308,6 +4322,7 @@ namespace http {
 					std::stringstream s_strid;
 					s_strid << std::hex << std::uppercase << rID;
 					devid = s_strid.str();
+				  #endif //FULL_HW_
 				}
 				else if (lighttype == 68)
 				{
@@ -4898,6 +4913,7 @@ namespace http {
 					if ((pBaseHardware->HwdType != HTYPE_EnOceanESP2) && (pBaseHardware->HwdType != HTYPE_EnOceanESP3)
 						&& (pBaseHardware->HwdType != HTYPE_USBtinGateway) )
 						return;
+				  #ifdef FULL_HW_SUPPORTED
 					unsigned long rID = 0;
 					if (pBaseHardware->HwdType == HTYPE_EnOceanESP2)
 					{
@@ -4931,6 +4947,7 @@ namespace http {
 					std::stringstream s_strid;
 					s_strid << std::hex << std::uppercase << rID;
 					devid = s_strid.str();
+				  #endif //FULL_HW_
 				}
 				else if (lighttype == 68)
 				{
@@ -9052,6 +9069,7 @@ namespace http {
 					CDomoticzHardwareBase *pHardware = m_mainworker.GetHardware(hardwareID);
 					if (pHardware != NULL)
 					{
+					  #ifdef FULL_HW_SUPPORTED
 						if (pHardware->HwdType == HTYPE_SolarEdgeAPI)
 						{
 							int seSensorTimeOut = 60 * 24 * 60;
@@ -9102,6 +9120,7 @@ namespace http {
 								root["result"][ii]["forecast_url"] = base64_encode(forecast_url);
 							}
 						}
+					  #endif //FULL_HW_
 					}
 
 					if ((pHardware != NULL) && (pHardware->HwdType == HTYPE_PythonPlugin))
@@ -9276,6 +9295,7 @@ namespace http {
 							DimmerType = "abs";
 							if (_hardwareNames.find(hardwareID) != _hardwareNames.end())
 							{
+							  #ifdef FULL_HW_SUPPORTED
 								// Milight V4/V5 bridges do not support absolute dimming for RGB or CW_WW lights
 								if (_hardwareNames[hardwareID].HardwareTypeVal == HTYPE_LimitlessLights &&
 								    atoi(_hardwareNames[hardwareID].Mode2.c_str()) != CLimitLess::LBTYPE_V6 &&
@@ -9285,6 +9305,7 @@ namespace http {
 								{
 									DimmerType = "rel";
 								}
+							  #endif
 							}
 						}
 						root["result"][ii]["DimmerType"] = DimmerType;
@@ -11719,6 +11740,7 @@ namespace http {
 					}
 					root["result"][ii]["DataTimeout"] = atoi(sd[16].c_str());
 
+				  #ifdef FULL_HW_SUPPORTED
 					//Special case for openzwave (status for nodes queried)
 					CDomoticzHardwareBase *pHardware = m_mainworker.GetHardware(atoi(sd[0].c_str()));
 					if (pHardware != NULL)
@@ -11764,6 +11786,7 @@ namespace http {
 #endif
 						}
 					}
+				  #endif //FULL_HW_
 					ii++;
 				}
 			}
