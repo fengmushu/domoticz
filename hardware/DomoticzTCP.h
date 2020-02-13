@@ -14,9 +14,9 @@ public:
 	~DomoticzTCP(void);
 	bool WriteToHardware(const char *pdata, const unsigned char length) override;
 	boost::signals2::signal<void()>	sDisconnected;
+	bool isConnected();
 #ifndef NOCLOUD
 	void SetConnected(bool connected);
-	bool isConnected();
 	void Authenticated(const std::string &aToken, bool authenticated);
 	void FromProxy(const unsigned char *data, size_t datalen);
 	bool CompareToken(const std::string &aToken);
