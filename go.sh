@@ -7,7 +7,8 @@ cmake -DBUILD_SHARED_LIBS=yes \
 	-DUSE_STATIC_LIBSTDCXX=no \
 	-DUSE_STATIC_OPENZWAVE=no \
 	-DUSE_OPENSSL_STATIC=yes \
-	-DUSE_PYTHON=yes \
+	-DUSE_PYTHON=no \
+	-DUSE_FULL_HW=yes \
 	-DUSE_TLS_SUPPORT=no \
 	-DWITH_LIBUSB=no \
     -B build || {
